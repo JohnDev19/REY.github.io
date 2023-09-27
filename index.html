@@ -136,33 +136,7 @@
             color: #ddd;
             font-size: 1.2rem;
         }
-
-        /* Chat container */
-        .chat-container {
-            max-width: 80%;
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 10px;
-            margin-top: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            overflow-y: auto;
-            max-height: 300px;
-            overflow-x: hidden;
-        }
-
-        .user-message {
-            text-align: right;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-
-        .assistant-message {
-            text-align: left;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-
+        
         /* Particle.js container */
         #particles-js {
             position: absolute;
@@ -190,7 +164,7 @@
     <section class="main">
         <div class="image-container">
             <div class="image">
-                <img src="placeholder-image.png" alt="REY Image">
+                <img src="rey.png" alt="REY Image">
             </div>
             <h1>REY</h1>
             <p>Your AI Virtual Assistant</p>
@@ -200,14 +174,11 @@
                 <div class="sound-wave" style="left: 10px;"></div>
                 <div class="sound-wave" style="left: 30px;"></div>
                 <div class="sound-wave" style="left: 50px;"></div>
+                <div class="sound-wave" style="left: 70px;"></div>
+                <div class="sound-wave" style="left: 90px;"></div>
             </div>
             <button class="talk" id="talk-button"><i class="fas fa-microphone-alt"></i></button>
             <h1 class="content" id="speech-status">Click here to speak</h1>
-            <div class="chat-container" id="chat-box">
-                <!-- Chat messages will appear here -->
-            </div>
-            <input type="text" id="user-input" placeholder="Type your query...">
-            <button id="send-button">Send</button>
         </div>
     </section>
 
@@ -215,9 +186,6 @@
     <script>
         const talkButton = document.getElementById('talk-button');
         const speechStatus = document.getElementById('speech-status');
-        const chatBox = document.getElementById('chat-box');
-        const userInputElement = document.getElementById('user-input');
-        const sendButton = document.getElementById('send-button');
 
         talkButton.addEventListener('click', () => {
             talkButton.classList.toggle('listening-animation');
@@ -227,60 +195,31 @@
                 speechStatus.textContent = 'Click here to speak';
             }
         });
-
-        // Handle user input and add to the chat box
-        sendButton.addEventListener('click', () => {
-            const userInput = userInputElement.value;
-            if (userInput.trim() !== '') {
-                addUserMessage(userInput);
-                userInputElement.value = '';
-                // Call your API here with userInput
-                // Append the response to the chat box
-                // Example:
-                // addAssistantMessage("Response from AI: " + response);
-            }
-        });
-
-        function addUserMessage(message) {
-            const userMessage = document.createElement('div');
-            userMessage.classList.add('user-message');
-            userMessage.textContent = message;
-            chatBox.appendChild(userMessage);
-            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat box
-        }
-
-        function addAssistantMessage(message) {
-            const assistantMessage = document.createElement('div');
-            assistantMessage.classList.add('assistant-message');
-            assistantMessage.textContent = message;
-            chatBox.appendChild(assistantMessage);
-            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat box
-        }
     </script>
 
     <!-- Particle.js configuration -->
-    <script>
-        particlesJS("particles-js", {
-            particles: {
-                number: {
-                    value: 80,
-                    density: {
-                        enable: true,
-                        value_area: 800
-                    }
-                },
-                color: {
-                    value: "#ffffff"
-                },
-                shape: {
-                    type: "circle",
-                    stroke: {
-                        width: 0,
-                        color: "#000000"
+        <script>
+            particlesJS("particles-js", {
+                particles: {
+                    number: {
+                        value: 80,
+                        density: {
+                            enable: true,
+                            value_area: 800
+                        }
                     },
-                    polygon: {
-                        nb_sides: 5
-                    }
+                    color: {
+                        value: "#ffffff"
+                    },
+                    shape: {
+                        type: "circle",
+                        stroke: {
+                            width: 0,
+                            color: "#000000"
+                        },
+                        polygon: {
+                            nb_sides: 5
+                        }
                 },
                 opacity: {
                     value: 0.5,
@@ -305,7 +244,7 @@
                 line_linked: {
                     enable: true,
                     distance: 150,
-                    color: "#ffffff",
+                    color: "#007DFF",
                     opacity: 0.4,
                     width: 1
                 },
@@ -366,16 +305,15 @@
             retina_detect: true
         });
     </script>
-
-    <!-- External JavaScript for API integration -->
+    
+    <!-- app.js file -->
     <script src="app.js"></script>
 
     <!-- Footer -->
     <footer>
-        <p>About REY</p>
         <p>&copy; 2023 All rights reserved</p>
     </footer>
 </body>
 
     </html>
-                
+    
