@@ -1,6 +1,5 @@
 const btn = document.querySelector('.talk');
 const content = document.querySelector('.content');
-const chatBox = document.querySelector('.chat-container');
 
 function speak(sentence) {
     const textToSpeak = new SpeechSynthesisUtterance(sentence);
@@ -42,11 +41,11 @@ window.addEventListener('load', () => {
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 
-recognition.onresult = async (event) => {
+recognition.onresult = (event) => {
     const current = event.resultIndex;
     const transcript = event.results[current][0].transcript;
     content.textContent = transcript;
-    await processUserInput(transcript.toLowerCase());
+    processUserInput(transcript.toLowerCase());
 };
 
 btn.addEventListener('click', () => {
@@ -54,10 +53,8 @@ btn.addEventListener('click', () => {
     changeInputStyle();
 });
 
-async function processUserInput(message) {
+function processUserInput(message) {
     const speech = new SpeechSynthesisUtterance();
-
-    speech.text = "I apologize, but I didn't quite catch that. Could you please repeat or rephrase your question or request?";
 
     if (message.includes('hey') || message.includes('hello')) {
         const finalText = "Hello there! It's always a pleasure to greet you. How can I assist you today?";
@@ -68,7 +65,7 @@ async function processUserInput(message) {
     } else if (message.includes('name')) {
         const finalText = "My name is REY, and I was developed by John Rey Poras. How can I help you further?";
         speech.text = finalText;
-    } else if (message.includes('do you John Rey?')) {
+    } else if (message.includes('do you know John Rey?')) {
         const finalText = "Yes, he is my creator. How can I assist you today?";
         speech.text = finalText;
     } else if (message.includes('open google')) {
@@ -80,43 +77,42 @@ async function processUserInput(message) {
         const finalText = "Instagram is on its way! What's your next destination on the internet?";
         speech.text = finalText;
     } else if (message.includes('what is') || message.includes('who is') || message.includes('what are')) {
-        window.open(`https://www.google.com/search?q=${message.replace(" ", "+")}`, "_blank");
-        const finalText = "Let me assist you in your quest for knowledge. I've initiated a search for " + message + ". Please wait while I retrieve the information.";
+        // Check if the query is about something to learn
+        const query = message.replace('what is', '').replace('who is', '').replace('what are', '').trim();
+        const searchUrl = `https://www.google.com/search?q=${query.replace(" ", "+")}`;
+        window.open(searchUrl, "_blank");
+        const finalText = `Let me assist you in your quest for knowledge. I've initiated a search for ${query}. Please wait while I retrieve the information.`;
         speech.text = finalText;
     } else if (message.includes('wikipedia')) {
-        const cookies = "awjlAGX4_U9ijXbpT8ulRLS2wNam9SPQe0KG_nWZQ1nex_pHIvLJAVTAtplWqvNBCwCbOw";
-        const response = encodeURIComponent(message.replace("wikipedia", "").trim());
-        
-        try {
-            const apiResponse = await axios.get(`https://bardtest.arjhil.repl.co/ask?cookies=${cookies}&question=${response}`);
-            const finalText = apiResponse.data.response;
-            addAssistantMessage(finalText);
-            return;
-        } catch (error) {
-            console.error(error);
-        }
-        
-        const finalText = "You've chosen a reliable source! I'm looking up information about " + message + " on Wikipedia. Give me a moment to find the details.";
+        // Check if the query is for Wikipedia
+        const query = message.replace('wikipedia', '').trim();
+        const wikipediaUrl = `https://en.wikipedia.org/wiki/${query}`;
+        window.open(wikipediaUrl, "_blank");
+        const finalText = `You've chosen a reliable source! I'm looking up information about ${query} on Wikipedia. Give me a moment to find the details.`;
         speech.text = finalText;
     } else if (message.includes('time')) {
         const time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });
-        const finalText = "The current time is " + time + ". How else can I assist you today?";
+        const finalText = `The current time is ${time}. How else can I assist you today?`;
         speech.text = finalText;
     } else if (message.includes('date')) {
         const date = new Date().toLocaleString(undefined, { month: "long", day: "numeric" });
-        const finalText = "Today's date is " + date + ". What else would you like to know or do?";
+        const finalText = `Today's date is ${date}. What else would you like to know or do?`;
         speech.text = finalText;
     } else if (message.includes('calculator')) {
         window.open('Calculator:///');
         const finalText = "I've activated the calculator for you. Ready to crunch some numbers?";
         speech.text = finalText;
+    } else if (message.includes('search')) {
+        // Check if the user wants to perform a web search
+        const query = message.replace('search', '').trim();
+        const searchUrl = `https://www.google.com/search?q=${query.replace(" ", "+")}`;
+        window.open(searchUrl, "_blank");
+        const finalText = `I've initiated a search for ${query}. Please wait while I retrieve the results for you.`;
+        speech.text = finalText;
     } else {
-        window.open(`https://www.google.com/search?q=${message.replace(" ", "+")}`, "_blank");
-        const finalText = "I couldn't find a specific response for " + message + " but here are some search results from Google. How else can I assist you?";
+        const finalText = "I couldn't find a specific response for your query, but I'm here to help you with other tasks. How else can I assist you?";
         speech.text = finalText;
     }
-
-    addAssistantMessage(speech.text);
 
     speech.volume = 1;
     speech.pitch = 1;
@@ -125,27 +121,5 @@ async function processUserInput(message) {
     window.speechSynthesis.speak(speech);
     // Reset the input style after speaking
     resetInputStyle();
-}
-
-function addAssistantMessage(message) {
-    const assistantMessage = document.createElement('div');
-    assistantMessage.classList.add('assistant-message');
-    assistantMessage.textContent = message;
-
-    // Add typing animation effect
-    assistantMessage.style.overflow = 'hidden';
-    assistantMessage.style.borderRight = 'solid 3px white';
-    let i = 0;
-    const typingEffect = setInterval(() => {
-        if (i < message.length) {
-            assistantMessage.innerHTML += message.charAt(i);
-            i++;
-        } else {
-            clearInterval(typingEffect);
         }
-    }, 50);
-
-    chatBox.appendChild(assistantMessage);
-    chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat box
-          }
-                     
+        
