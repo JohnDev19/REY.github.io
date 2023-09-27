@@ -5,33 +5,377 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REY | an AI Virtual Assistant</title>
+    <title>REY | AI Virtual Assistant</title>
 
-    <!---- CSS Linkage ------>
+    <!-- CSS Linkage -->
     <link rel="stylesheet" href="style.css">
 
-    <!---- Font Awesome Cdn Linkage ------>
+    <!-- Font Awesome CDN Linkage -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
+    <!-- Particle.js Library -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #343a40;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .image-container {
+            text-align: center;
+            animation: fadeIn 2s;
+        }
+
+        .image {
+            border-radius: 50%;
+            overflow: hidden;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            border: 5px solid #007BFF;
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-top: 20px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        p {
+            font-size: 1.5rem;
+            margin-top: 10px;
+            color: #ddd;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .input {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Listening animation */
+        .listening-container {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        /* Animated sound waves */
+        .sound-wave {
+            width: 10px;
+            height: 40px;
+            background-color: #007BFF;
+            position: absolute;
+            bottom: 0;
+            animation: soundWave 1s linear infinite;
+        }
+
+        /* Define keyframes for the sound wave animation */
+        @keyframes soundWave {
+            0% {
+                height: 20px;
+                opacity: 1;
+            }
+            50% {
+                height: 40px;
+                opacity: 0.6;
+            }
+            100% {
+                height: 20px;
+                opacity: 1;
+            }
+        }
+
+        .talk {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            box-shadow: 0px 0px 20px rgba(0, 123, 255, 0.5);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .talk:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+
+        .content {
+            margin-top: 10px;
+            color: #ddd;
+            font-size: 1.2rem;
+        }
+
+        /* Chat container */
+        .chat-container {
+            max-width: 80%;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            overflow-y: auto;
+            max-height: 300px;
+            overflow-x: hidden;
+        }
+
+        .user-message {
+            text-align: right;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .assistant-message {
+            text-align: left;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        /* Particle.js container */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #343a40;
+            padding: 20px 0;
+            text-align: center;
+            color: #fff;
+        }
+    </style>
 </head>
 
 <body>
+    <!-- Particle.js container -->
+    <div id="particles-js"></div>
+
     <section class="main">
         <div class="image-container">
             <div class="image">
-                <img src="gif.gif" alt="image">
+                <img src="placeholder-image.png" alt="REY Image">
             </div>
             <h1>REY</h1>
-            <p>I am REY, your AI Virtual Assitant. How can I assist you today?</p>
+            <p>Your AI Virtual Assistant</p>
         </div>
         <div class="input">
-            <button class="talk"><i class="fas fa-microphone-alt"></i></button>
-            <h1 class="content"> Click here to speak</h1>
+            <div class="listening-container">
+                <div class="sound-wave" style="left: 10px;"></div>
+                <div class="sound-wave" style="left: 30px;"></div>
+                <div class="sound-wave" style="left: 50px;"></div>
+            </div>
+            <button class="talk" id="talk-button"><i class="fas fa-microphone-alt"></i></button>
+            <h1 class="content" id="speech-status">Click here to speak</h1>
+            <div class="chat-container" id="chat-box">
+                <!-- Chat messages will appear here -->
+            </div>
+            <input type="text" id="user-input" placeholder="Type your query...">
+            <button id="send-button">Send</button>
         </div>
     </section>
 
-    <!------- Js Linkage --------->
+    <!-- JavaScript to toggle listening animation -->
+    <script>
+        const talkButton = document.getElementById('talk-button');
+        const speechStatus = document.getElementById('speech-status');
+        const chatBox = document.getElementById('chat-box');
+        const userInputElement = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+
+        talkButton.addEventListener('click', () => {
+            talkButton.classList.toggle('listening-animation');
+            if (talkButton.classList.contains('listening-animation')) {
+                speechStatus.textContent = 'Listening...';
+            } else {
+                speechStatus.textContent = 'Click here to speak';
+            }
+        });
+
+        // Handle user input and add to the chat box
+        sendButton.addEventListener('click', () => {
+            const userInput = userInputElement.value;
+            if (userInput.trim() !== '') {
+                addUserMessage(userInput);
+                userInputElement.value = '';
+                // Call your API here with userInput
+                // Append the response to the chat box
+                // Example:
+                // addAssistantMessage("Response from AI: " + response);
+            }
+        });
+
+        function addUserMessage(message) {
+            const userMessage = document.createElement('div');
+            userMessage.classList.add('user-message');
+            userMessage.textContent = message;
+            chatBox.appendChild(userMessage);
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat box
+        }
+
+        function addAssistantMessage(message) {
+            const assistantMessage = document.createElement('div');
+            assistantMessage.classList.add('assistant-message');
+            assistantMessage.textContent = message;
+            chatBox.appendChild(assistantMessage);
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat box
+        }
+    </script>
+
+    <!-- Particle.js configuration -->
+    <script>
+        particlesJS("particles-js", {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#ffffff"
+                },
+                shape: {
+                    type: "circle",
+                    stroke: {
+                        width: 0,
+                        color: "#000000"
+                    },
+                    polygon: {
+                        nb_sides: 5
+                    }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: false,
+                    anim: {
+                        enable: false,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: false,
+                        speed: 40,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#ffffff",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 6,
+                    direction: "none",
+                    random: false,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "repulse"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 400,
+                        line_linked: {
+                            opacity: 1
+                        }
+                    },
+                    bubble: {
+                        distance: 400,
+                        size: 40,
+                        duration: 2,
+                        opacity: 8,
+                        speed: 3
+                    },
+                    repulse: {
+                        distance: 200,
+                        duration: 0.4
+                    },
+                    push: {
+                        particles_nb: 4
+                    },
+                    remove: {
+                        particles_nb: 2
+                    }
+                }
+            },
+            retina_detect: true
+        });
+    </script>
+
+    <!-- External JavaScript for API integration -->
     <script src="app.js"></script>
+
+    <!-- Footer -->
+    <footer>
+        <p>About REY</p>
+        <p>&copy; 2023 All rights reserved</p>
+    </footer>
 </body>
 
-</html>
+    </html>
+                
