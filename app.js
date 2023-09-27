@@ -1,5 +1,6 @@
 const btn = document.querySelector('.talk');
 const content = document.querySelector('.content');
+const chatBox = document.querySelector('.chat-container');
 
 function speak(sentence) {
     const textToSpeak = new SpeechSynthesisUtterance(sentence);
@@ -41,11 +42,11 @@ window.addEventListener('load', () => {
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 
-recognition.onresult = (event) => {
+recognition.onresult = async (event) => {
     const current = event.resultIndex;
     const transcript = event.results[current][0].transcript;
     content.textContent = transcript;
-    processUserInput(transcript.toLowerCase());
+    await processUserInput(transcript.toLowerCase());
 };
 
 btn.addEventListener('click', () => {
@@ -53,7 +54,7 @@ btn.addEventListener('click', () => {
     changeInputStyle();
 });
 
-function processUserInput(message) {
+async function processUserInput(message) {
     const speech = new SpeechSynthesisUtterance();
 
     speech.text = "I apologize, but I didn't quite catch that. Could you please repeat or rephrase your question or request?";
@@ -83,7 +84,18 @@ function processUserInput(message) {
         const finalText = "Let me assist you in your quest for knowledge. I've initiated a search for " + message + ". Please wait while I retrieve the information.";
         speech.text = finalText;
     } else if (message.includes('wikipedia')) {
-        window.open(`https://en.wikipedia.org/wiki/${message.replace("wikipedia", "").trim()}`, "_blank");
+        const cookies = "awjlAGX4_U9ijXbpT8ulRLS2wNam9SPQe0KG_nWZQ1nex_pHIvLJAVTAtplWqvNBCwCbOw";
+        const response = encodeURIComponent(message.replace("wikipedia", "").trim());
+        
+        try {
+            const apiResponse = await axios.get(`https://bardtest.arjhil.repl.co/ask?cookies=${cookies}&question=${response}`);
+            const finalText = apiResponse.data.response;
+            addAssistantMessage(finalText);
+            return;
+        } catch (error) {
+            console.error(error);
+        }
+        
         const finalText = "You've chosen a reliable source! I'm looking up information about " + message + " on Wikipedia. Give me a moment to find the details.";
         speech.text = finalText;
     } else if (message.includes('time')) {
@@ -104,6 +116,8 @@ function processUserInput(message) {
         speech.text = finalText;
     }
 
+    addAssistantMessage(speech.text);
+
     speech.volume = 1;
     speech.pitch = 1;
     speech.rate = 1;
@@ -112,3 +126,26 @@ function processUserInput(message) {
     // Reset the input style after speaking
     resetInputStyle();
 }
+
+function addAssistantMessage(message) {
+    const assistantMessage = document.createElement('div');
+    assistantMessage.classList.add('assistant-message');
+    assistantMessage.textContent = message;
+
+    // Add typing animation effect
+    assistantMessage.style.overflow = 'hidden';
+    assistantMessage.style.borderRight = 'solid 3px white';
+    let i = 0;
+    const typingEffect = setInterval(() => {
+        if (i < message.length) {
+            assistantMessage.innerHTML += message.charAt(i);
+            i++;
+        } else {
+            clearInterval(typingEffect);
+        }
+    }, 50);
+
+    chatBox.appendChild(assistantMessage);
+    chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat box
+          }
+                     
