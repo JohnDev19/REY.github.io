@@ -22,7 +22,6 @@
             font-family: Arial, sans-serif;
             background-color: #343a40;
             margin: 0;
-            overflow: hidden;
         }
 
         .main {
@@ -30,7 +29,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
+            padding-bottom: 60px;
         }
 
         .image-container {
@@ -57,8 +57,17 @@
             font-size: 3rem;
             margin-top: 20px;
             color: #fff;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            animation: glow 2s ease-in-out infinite alternate;
+            text-shadow: none;
+            animation: glowText 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowText {
+            0% {
+                color: #007BFF;
+            }
+            100% {
+                color: #fff;
+            }
         }
 
         p {
@@ -66,6 +75,34 @@
             margin-top: 10px;
             color: #ddd;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Icons for About REY, Tools, and Chat */
+        .icons-container {
+            position: absolute;
+            top: 10%;
+            right: 8px;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .icon {
+            font-size: 1.2rem;
+            color: #007BFF;
+            margin: 5px;
+            text-decoration: none
+        }
+
+        /* Animation for the icons */
+        .icon:hover {
+            color: #0056b3; /* Darker blue on hover */
+            transform: scale(1.2);
+            transition: transform 0.3s ease;
         }
 
         .input {
@@ -136,7 +173,7 @@
             color: #ddd;
             font-size: 1.2rem;
         }
-        
+
         /* Particle.js container */
         #particles-js {
             position: absolute;
@@ -145,14 +182,6 @@
             top: 0;
             left: 0;
             z-index: -1;
-        }
-
-        /* Footer */
-        footer {
-            background-color: #343a40;
-            padding: 20px 0;
-            text-align: center;
-            color: #fff;
         }
     </style>
 </head>
@@ -166,7 +195,7 @@
             <div class="image">
                 <img src="reyy.png" alt="REY Image">
             </div>
-            <h1>REY</h1>
+            <h1 class="glowing-text">REY</h1>
             <p>Your AI Virtual Assistant</p>
         </div>
         <div class="input">
@@ -179,6 +208,12 @@
             </div>
             <button class="talk" id="talk-button"><i class="fas fa-microphone-alt"></i></button>
             <h1 class="content" id="speech-status">Click here to speak</h1>
+        </div>
+        <!-- Icons with links for About REY, Tools, and Chat -->
+        <div class="icons-container">
+            <a href="about.html" class="icon"><i class="fas fa-info-circle"></i></a>
+            <a href="tools.html" class="icon"><i class="fas fa-tools"></i></a>
+            <a href="chat.html" class="icon"><i class="fas fa-comments"></i></a>
         </div>
     </section>
 
@@ -198,28 +233,28 @@
     </script>
 
     <!-- Particle.js configuration -->
-        <script>
-            particlesJS("particles-js", {
-                particles: {
-                    number: {
-                        value: 80,
-                        density: {
-                            enable: true,
-                            value_area: 800
-                        }
+    <script>
+        particlesJS("particles-js", {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#ffffff"
+                },
+                shape: {
+                    type: "circle",
+                    stroke: {
+                        width: 0,
+                        color: "#000000"
                     },
-                    color: {
-                        value: "#ffffff"
-                    },
-                    shape: {
-                        type: "circle",
-                        stroke: {
-                            width: 0,
-                            color: "#000000"
-                        },
-                        polygon: {
-                            nb_sides: 5
-                        }
+                    polygon: {
+                        nb_sides: 5
+                    }
                 },
                 opacity: {
                     value: 0.5,
@@ -305,14 +340,10 @@
             retina_detect: true
         });
     </script>
-    
+
     <!-- app.js file -->
     <script src="app.js"></script>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2023 All rights reserved</p>
-    </footer>
 </body>
 
-</html>
+                                                  </html>
+                                                 
