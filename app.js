@@ -35,7 +35,7 @@ function wishMe() {
 }
 
 window.addEventListener('load', () => {
-    speak("Activating REY. Stand by as I come online to assist you.");
+    speak("Activating. Stand by as I come online to assist you.");
     wishMe();
 });
 
@@ -64,7 +64,7 @@ function processUserInput(message) {
         const finalText = "I'm doing well, thank you for asking! How can I be of service to you today?";
         speech.text = finalText;
     } else if (message.includes('name')) {
-        const finalText = "My name is REY, and I was developed by John Rey Poras. How can I help you further?";
+        const finalText = "My name is Webby, and I was developed by John Rey Poras. How can I help you further?";
         speech.text = finalText;
     } else if (message.includes('do you know John Rey?')) {
         const finalText = "Yes, he is my creator. How can I assist you today?";
