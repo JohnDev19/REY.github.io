@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webby</title>
+
+    <!-- CSS Linkage -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Font Awesome CDN Linkage -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Particle.js Library -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+ <!-- Navigation -->
+    <nav class="grid-nav padding">
+        <div class="col-1">
+            <form id="filterSwitchForm" class="menu-active-off form-switch">
+                <div class="onoffswitch f-left hover">
+                    <input type="hidden" name="filterSwitch" value="any" />
+                    <input type="checkbox" name="filterSwitch" class="onoffswitch-checkbox" value="mashup" id="myonoffswitch">
+
+    
+                    </label>
+                </div>
+                <p class="label">Webby</p>
+            </form>
+        </div>
+
+    </nav>
+    <!-- Particle.js container -->
+    <div id="particles-js"></div>
+
+    <section class="main">
+	<br><br>
+        <div class="image-container">
+            <div class="image">
+                <img src="reyy.png" alt="REY Image">
+            </div>
+            <h1 class="glowing-text"><br><br>Say Hi!</h1>
+        </div>
+        <div class="input">
+            <div class="listening-container">
+                <div class="sound-wave" style="left: 10px;"></div>
+                <div class="sound-wave" style="left: 30px;"></div>
+                <div class="sound-wave" style="left: 50px;"></div>
+                <div class="sound-wave" style="left: 70px;"></div>
+                <div class="sound-wave" style="left: 90px;"></div>
+            </div>
+            <button class="talk" id="talk-button"><i class="fas fa-microphone-alt"></i></button>
+            <h1 class="content" id="speech-status">Click here to speak</h1>
+        </div>
+    </section>
+	<!-- Footer -->
+    <footer class="grid-footer padding">
+        <div class="col-1">
+            <p id="terms" class="js-modal-trigger link footer-link-terms" onclick="ga('send', 'event', 'GJD', 'Modal', 'Terms');"> </p>
+        </div>
+        <div class="col-2">
+    <p class="footer-made"><span class="di-md-down-off"> </span>   <a class="link" onclick="sendMessageToMessenger(); ga('send', 'event', 'GJD', 'Footer', 'Messenger'); return false;"> </a></p>
+</div>
+
+        <div class="col-3">
+            <div class="footer-tweet-buttons">
+                <a target="_blank" href="https://github.com/JohnDev19/" class="btn">GitHub 🤝</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript to toggle listening animation -->
+    <script>
+        const talkButton = document.getElementById('talk-button');
+        const speechStatus = document.getElementById('speech-status');
+
+        talkButton.addEventListener('click', () => {
+            talkButton.classList.toggle('listening-animation');
+            if (talkButton.classList.contains('listening-animation')) {
+                speechStatus.textContent = 'Listening...';
+            } else {
+                speechStatus.textContent = 'Click here to speak';
+            }
+        });
+    </script>
+
+
+    <!-- app.js file -->
+    <script src="app.js"></script>
+</body>
+
+                                                  </html>
+                                                 
