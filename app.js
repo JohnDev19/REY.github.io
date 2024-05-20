@@ -3,7 +3,6 @@ const content = document.querySelector('.content');
 
 function speak(sentence) {
     const textToSpeak = new SpeechSynthesisUtterance(sentence);
-
     textToSpeak.lang = 'en-US'; // Change language code as needed
     textToSpeak.rate = 1;
     textToSpeak.pitch = 1;
@@ -54,7 +53,7 @@ btn.addEventListener('click', () => {
     changeInputStyle();
 });
 
-function processUserInput(message) {
+async function processUserInput(message) {
     const speech = new SpeechSynthesisUtterance();
 
     if (message.includes('hey') || message.includes('hello')) {
@@ -79,9 +78,8 @@ function processUserInput(message) {
         speech.text = finalText;
     } else if (message.includes('what is') || message.includes('who is') || message.includes('what are')) {
         const query = message.replace('what is', '').replace('who is', '').replace('what are', '').trim();
-        const searchUrl = `https://www.google.com/search?q=${query.replace(" ", "+")}`;
-        window.open(searchUrl, "_blank");
-        const finalText = `Let me assist you in your quest for knowledge. I've initiated a search for ${query}. Please wait while I retrieve the information.`;
+        speak(`Webby, what is ${query}?`);
+        const finalText = await getApiResponse(query);
         speech.text = finalText;
     } else if (message.includes('wikipedia')) {
         const query = message.replace('wikipedia', '').trim();
@@ -108,7 +106,8 @@ function processUserInput(message) {
         const finalText = `I've initiated a search for ${query}. Please wait while I retrieve the results for you.`;
         speech.text = finalText;
     } else {
-        const finalText = "I couldn't find a specific response for your query, but I'm here to help you with other tasks. How else can I assist you?";
+        speak(`Webby, ${message}`);
+        const finalText = await getApiResponse(message);
         speech.text = finalText;
     }
 
@@ -118,4 +117,25 @@ function processUserInput(message) {
 
     window.speechSynthesis.speak(speech);
     resetInputStyle();
+}
+
+async function getApiResponse(query) {
+    const apiKey = 'YOUR_SERPAPI_KEY';
+    const apiUrl = `https://serpapi.com/search.json?engine=google&q=${encodeURIComponent(query)}&api_key=${apiKey}`;
+
+    try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        if (data.answer_box && data.answer_box.answers && data.answer_box.answers.length > 0) {
+            return data.answer_box.answers[0].answer;
+        } else if (data.snippets && data.snippets.length > 0) {
+            return data.snippets[0].snippet;
+        } else {
+            return "I'm sorry, I couldn't find any information on that topic.";
+        }
+    } catch (error) {
+        console.error('Error fetching API response:', error);
+        return "I'm sorry, but I couldn't fetch the information you requested. Please try again later.";
+    }
 }
