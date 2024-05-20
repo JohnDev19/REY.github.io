@@ -3,7 +3,7 @@ const content = document.querySelector('.content');
 
 function speak(sentence) {
     const textToSpeak = new SpeechSynthesisUtterance(sentence);
-    textToSpeak.lang = 'en-US'; // Change language code as needed
+    textToSpeak.lang = 'en-US'; 
     textToSpeak.rate = 1;
     textToSpeak.pitch = 1;
 
@@ -120,7 +120,7 @@ async function processUserInput(message) {
 }
 
 async function getApiResponse(query) {
-    const apiKey = 'YOUR_SERPAPI_KEY';
+    const apiKey = 'a9c4e3dd783ffd6e7eab5c390aaecdee66f62222c004fdc421fde362c4f13a56';
     const apiUrl = `https://serpapi.com/search.json?engine=google&q=${encodeURIComponent(query)}&api_key=${apiKey}`;
 
     try {
