@@ -4,6 +4,7 @@ const content = document.querySelector('.content');
 function speak(sentence) {
     const textToSpeak = new SpeechSynthesisUtterance(sentence);
 
+    textToSpeak.lang = 'en-US'; // Change language code as needed
     textToSpeak.rate = 1;
     textToSpeak.pitch = 1;
 
@@ -77,14 +78,12 @@ function processUserInput(message) {
         const finalText = "Instagram is on its way! What's your next destination on the internet?";
         speech.text = finalText;
     } else if (message.includes('what is') || message.includes('who is') || message.includes('what are')) {
-        // Check if the query is about something to learn
         const query = message.replace('what is', '').replace('who is', '').replace('what are', '').trim();
         const searchUrl = `https://www.google.com/search?q=${query.replace(" ", "+")}`;
         window.open(searchUrl, "_blank");
         const finalText = `Let me assist you in your quest for knowledge. I've initiated a search for ${query}. Please wait while I retrieve the information.`;
         speech.text = finalText;
     } else if (message.includes('wikipedia')) {
-        // Check if the query is for Wikipedia
         const query = message.replace('wikipedia', '').trim();
         const wikipediaUrl = `https://en.wikipedia.org/wiki/${query}`;
         window.open(wikipediaUrl, "_blank");
@@ -103,7 +102,6 @@ function processUserInput(message) {
         const finalText = "I've activated the calculator for you. Ready to crunch some numbers?";
         speech.text = finalText;
     } else if (message.includes('search')) {
-        // Check if the user wants to perform a web search
         const query = message.replace('search', '').trim();
         const searchUrl = `https://www.google.com/search?q=${query.replace(" ", "+")}`;
         window.open(searchUrl, "_blank");
@@ -119,7 +117,5 @@ function processUserInput(message) {
     speech.rate = 1;
 
     window.speechSynthesis.speak(speech);
-    // Reset the input style after speaking
     resetInputStyle();
-        }
-        
+}
