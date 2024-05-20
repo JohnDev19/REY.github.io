@@ -78,7 +78,7 @@ async function processUserInput(message) {
         speech.text = finalText;
     } else if (message.includes('what is') || message.includes('who is') || message.includes('what are')) {
         const query = message.replace('what is', '').replace('who is', '').replace('what are', '').trim();
-        speak(`Webby, what is ${query}?`);
+        speak(` `);
         const finalText = await getApiResponse(query);
         speech.text = finalText;
     } else if (message.includes('wikipedia')) {
