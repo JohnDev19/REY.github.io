@@ -106,7 +106,7 @@ async function processUserInput(message) {
         const finalText = `I've initiated a search for ${query}. Please wait while I retrieve the results for you.`;
         speech.text = finalText;
     } else {
-        speak(`${message}`);
+        speak(`Webby, ${message}`);
         const finalText = await getApiResponse(message);
         speech.text = finalText;
     }
