@@ -3,7 +3,7 @@ const content = document.querySelector('.content');
 
 function speak(sentence) {
     const textToSpeak = new SpeechSynthesisUtterance(sentence);
-    textToSpeak.lang = 'en-US'; 
+    textToSpeak.lang = 'en-US'; // Change language code as needed
     textToSpeak.rate = 1;
     textToSpeak.pitch = 1;
 
@@ -120,17 +120,14 @@ async function processUserInput(message) {
 }
 
 async function getApiResponse(query) {
-    const apiKey = 'a9c4e3dd783ffd6e7eab5c390aaecdee66f62222c004fdc421fde362c4f13a56';
-    const apiUrl = `https://serpapi.com/search.json?engine=google&q=${encodeURIComponent(query)}&api_key=${apiKey}`;
+    const apiUrl = `https://api.easy-api.online/v1/globalgpt?q=${encodeURIComponent(query)}`;
 
     try {
         const response = await fetch(apiUrl);
         const data = await response.json();
 
-        if (data.answer_box && data.answer_box.answers && data.answer_box.answers.length > 0) {
-            return data.answer_box.answers[0].answer;
-        } else if (data.snippets && data.snippets.length > 0) {
-            return data.snippets[0].snippet;
+        if (data.content) {
+            return data.content;
         } else {
             return "I'm sorry, I couldn't find any information on that topic.";
         }
