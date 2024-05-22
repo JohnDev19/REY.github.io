@@ -55,33 +55,6 @@
     checkDevTools();
   })();
 
-  // Disable console.log when developer tools are open
-  const devtoolsOpen = /./;
-  devtoolsOpen.toString = function() {
-    hidePopup(); // Hide the popup if it's open
-    return 'The developer tools are currently open.';
-  };
-  console.log('%c', devtoolsOpen);
-})();
-
- function preventAccess() {
-    alert("Accessing source code is not allowed.");
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    const links = document.querySelectorAll('a');
-
-    links.forEach(link => {
-      link.addEventListener('click', function(event) {
-        const href = link.getAttribute('href');
-        if (href.includes('source-code')) {
-          event.preventDefault();
-          preventAccess();
-        }
-      });
-    });
-  });
-
 
 const btn = document.querySelector('.talk');
 const content = document.querySelector('.content');
