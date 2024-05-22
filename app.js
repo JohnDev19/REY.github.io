@@ -64,6 +64,33 @@
   console.log('%c', devtoolsOpen);
 })();
 
+function preventViewSource() {
+    alert("Sorry, viewing the source code is not allowed.");
+  }
+
+  document.addEventListener('contextmenu', function(event) {
+    event.preventDefault();
+    preventViewSource();
+  });
+
+  document.addEventListener('keydown', function(event) {
+    if (event.ctrlKey && event.key === 'U') { // Detect Ctrl+U for viewing source
+      event.preventDefault();
+      preventViewSource();
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const linkElement = document.querySelector('a');
+    linkElement.addEventListener('click', function(event) {
+      const href = linkElement.getAttribute('href');
+      if (href.startsWith('view-source:')) {
+        event.preventDefault();
+        preventViewSource();
+      }
+    });
+  });
+
 
 const btn = document.querySelector('.talk');
 const content = document.querySelector('.content');
