@@ -178,7 +178,7 @@ async function processUserInput(message) {
 }
 
 async function getApiResponse(query) {
-    const apiUrl = `https://api.easy-api.online/v1/globalgpt?q=${encodeURIComponent(query)}`;
+    const apiUrl = `api=${encodeURIComponent(query)}`;
 
     try {
         const response = await fetch(apiUrl);
